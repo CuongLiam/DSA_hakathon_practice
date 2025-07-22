@@ -3,10 +3,13 @@
 
 #define MAX 100
 
+int count = 1;
+
 typedef struct Student {
     int id;
     char name[MAX];
-    char sdt[MAX];
+    int grade;
+    char note[MAX];
 } Student;
 
 typedef struct Node {
@@ -14,76 +17,51 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-typedef struct Queue {
-    Node* front;
-    Node* rear;
-
-    int size;
-    int capacity;
-} Queue;
-
-Node* createItem(int id) {
+Node* createItem() {
     Node* newItem = malloc(sizeof(Node));
-    newItem->data.id = id;
 
+    newItem->data.id = count++;
     printf("nhap ten: ");
     fgets(newItem->data.name, MAX, stdin);
 
-    printf("sdt: ");
-    fgets(newItem->data.sdt, MAX, stdin);
+    printf("grade: ");
+    scanf("%d", &newItem->data.grade);
+    fflush(stdin);
+
+    printf("note: ");
+    fgets(newItem->data.note, MAX, stdin);
 
     newItem->next = NULL;
 
     return newItem;
 }
 
-Queue* createQueue(int maxSize) {
-    Queue* newQueue = malloc(sizeof(Queue));
+Node* pushNode(Node* head) {
+    Node* newNode = createItem();
 
-    newQueue->front = NULL;
-    newQueue->rear = NULL;
-
-    newQueue->size = 0;
-    newQueue->capacity = maxSize;
-
-    return newQueue;
-}
-
-int isEmpty(Queue* q) {
-    if (q->size == 0) {
-        return 1;
+    if (head == NULL) {
+        return newNode;
     }
-    return 0;
+    Node* curr = head;
+    while (curr->next != NULL) {
+        curr = curr->next;
+    }
+    curr->next = newNode;
+    return head;
 }
 
-int isFull(Queue* q) {
-    return q->size == q->capacity;
-}
-
-void addToQueue(Queue* q) {
-    if (isFull(q)) {
-        printf("full");
-        return ;
+void printList(Node* head) {
+    if (head == NULL) {
+        printf("ds rong\n");
+        return;
     }
 
-    int newId = q->size + 1;
-    Node* newItem = createItem(newId);
-    if (isEmpty(q)) {
-        q->front = newItem;
-        q->rear = newItem;
-
-    } else {
-        q->rear->next = newItem;
-        q->rear = newItem;
-    }
-    q->size++;
-}
-
-void printQueue(Queue* q) {
-    Node* curr = q->front;
-
-    while (curr!=NULL) {
-        printf("%d", curr->data.id);
+    Node* curr = head;
+    while (curr != NULL) {
+        printf("\nid: %d", curr->data.id);
+        printf("\nname: %s", curr->data.name);
+        printf("grade: %d", curr->data.grade);
+        printf("\nnote: %s\n", curr->data.note);
 
         curr = curr->next;
     }
@@ -101,12 +79,40 @@ void displayMenu() {
     printf("\n0. exit");
 }
 
+// void freeList(Node* head) {
+//     Node* curr = head;
+//     while (curr != NULL) {
+//         Node* temp = curr;
+//         free(temp);
+//         curr = curr->next;
+//     }
+// }
+
 int main(void) {
-    Queue* queue1 = createQueue(5);
+    Node* stuHead = NULL;
 
-    addToQueue(queue1);
+    int choice;
+    do {
+        displayMenu();
+        printf("\nur choice...");
+        scanf("%d", &choice);
+        fflush(stdin);
+        switch (choice) {
+            case 1: {
+                stuHead = pushNode(stuHead);
+                break;
+            }
+            case 2: {
+                printList(stuHead);
+                break;
+            }
 
-    printQueue(queue1);
+            default:
+                break;
+        }
 
+    } while (choice != 0);
+
+    free(stuHead);
     return 0;
 }
