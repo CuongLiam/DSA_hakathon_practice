@@ -79,14 +79,43 @@ void displayMenu() {
     printf("\n0. exit");
 }
 
-// void freeList(Node* head) {
-//     Node* curr = head;
-//     while (curr != NULL) {
-//         Node* temp = curr;
-//         free(temp);
-//         curr = curr->next;
-//     }
-// }
+Node* deleteStudent(Node* head) {
+    if (head == NULL) {
+        printf("\nds rong, ko the xoa\n");
+        return head;
+    }
+
+    int delID;
+    printf("nhap ID muon xoa");
+    scanf("%d", &delID);
+
+    if (head->data.id == delID) {
+        Node* temp = head;
+        head = head->next;
+        free(temp);
+        return head;
+    }
+
+    Node* curr = head;
+    while (curr != NULL) {
+        if (curr->next->data.id == delID) {
+            Node* temp = curr->next;
+
+            if (curr->next->next == NULL) {
+                temp = curr->next;
+                curr->next = NULL;
+                free(temp);
+                return head;
+            }
+            curr->next = curr->next->next;
+            free(temp);
+            return head;
+        }
+        curr = curr->next;
+    }
+    printf("\nko ton tai ID de xoa\n");
+    return head;
+}
 
 int main(void) {
     Node* stuHead = NULL;
@@ -104,6 +133,14 @@ int main(void) {
             }
             case 2: {
                 printList(stuHead);
+                break;
+            }
+            case 3: {
+                stuHead = deleteStudent(stuHead);
+                if (stuHead == NULL) {
+                    printf("da xoa\n");
+                } else
+                printf("da xoa\n");
                 break;
             }
 
