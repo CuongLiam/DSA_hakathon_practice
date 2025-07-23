@@ -1,5 +1,7 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX 100
 
@@ -223,6 +225,41 @@ Node* sortByGrade(Node* head) {
     return head;
 }
 
+// void toLowerCase(char *str) {
+//     while (*str) {
+//         *str = tolower((unsigned char) *str);
+//         str++;
+//     }
+//
+//     // for (int i = 0; str[i]; i++) {
+//     //     tolower(str[i]);
+//     // }
+// }
+
+void findByName(Node* head) {
+    if (!head) {
+        printf("ds rong");
+        return;
+    }
+
+    char searchName[MAX];
+    printf("nhap ten muon tim: ");
+    fgets(searchName, MAX, stdin);
+    fflush(stdin);
+
+    Node* curr = head;
+    while (curr != NULL) {
+        if (strcmp(curr->data.name, searchName) == 0) {
+            printf("\n%d", curr->data.id);
+            printf("\n%s", curr->data.name);
+            printf("\n%d", curr->data.grade);
+            printf("\n%s", curr->data.note);
+            return ;
+        }
+        curr = curr->next;
+    }
+}
+
 int main(void) {
     Node* stuHead = NULL;
 
@@ -257,6 +294,11 @@ int main(void) {
             case 6: {
                 stuHead = sortByGrade(stuHead);
                 printList(stuHead);
+                break;
+            }
+            case 7: {
+                findByName(stuHead);
+                break;
             }
             default:
                 break;
