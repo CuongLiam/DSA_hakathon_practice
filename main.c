@@ -140,7 +140,6 @@ Node* updateStudent(Node* head) {
     printf("\nnhap id muon cap nhat");
     scanf("%d", &idToUpdate);
     fflush(stdin);
-    idToUpdate++;
 
     if (head->data.id == idToUpdate) {
         updateValue(head);
@@ -149,7 +148,7 @@ Node* updateStudent(Node* head) {
 
     Node* curr = head;
     while (curr != NULL) {
-        if (idToUpdate == curr->next->data.id) {
+        if (idToUpdate == curr->data.id) {
             updateValue(curr);
             printf("cap nhat thanh cong");
             return head;
@@ -166,6 +165,37 @@ void freeList(Node* head) {
         head = head->next;
         free(tmp);
     }
+}
+
+Node* notingStudent(Node* head) {
+    if (head == NULL) {
+        printf("ds rong\n");
+        return NULL;
+    }
+
+    int idToNote;
+    printf("nhap id muon note");
+    scanf("%d", &idToNote);
+    fflush(stdin);
+
+
+    if (idToNote == head->data.id) {
+        printf("noi dung note: ");
+        fgets(head->data.note, MAX, stdin);
+        return head;
+    }
+
+    Node* curr = head;
+    while (curr != NULL) {
+        if (idToNote == curr->data.id) {
+            printf("noi dung note: ");
+            fgets(curr->data.note, MAX, stdin);
+            return head;
+        }
+
+        curr = curr->next;
+    }
+    return head;
 }
 
 int main(void) {
@@ -193,6 +223,10 @@ int main(void) {
             }
             case 4: {
                 stuHead = updateStudent(stuHead);
+                break;
+            }
+            case 5: {
+                stuHead = notingStudent(stuHead);
                 break;
             }
             default:
