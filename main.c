@@ -198,6 +198,31 @@ Node* notingStudent(Node* head) {
     return head;
 }
 
+Node* sortByGrade(Node* head) {
+    if (head == NULL || head->next == NULL) {
+        printf("ds trong hoac co 1 ptu\n");
+        return head;
+    }
+
+    int swapped;
+    do {
+        swapped = 0;
+        Node* curr = head;
+        while (curr->next != NULL) {
+            if (curr->data.grade > curr->next->data.grade) {
+                Student temp = curr->data;
+                curr->data = curr->next->data;
+                curr->next->data = temp;
+                swapped = 1;
+            }
+            curr = curr->next;
+        }
+    } while (swapped);
+
+    printf("sort thanh cong");
+    return head;
+}
+
 int main(void) {
     Node* stuHead = NULL;
 
@@ -228,6 +253,10 @@ int main(void) {
             case 5: {
                 stuHead = notingStudent(stuHead);
                 break;
+            }
+            case 6: {
+                stuHead = sortByGrade(stuHead);
+                printList(stuHead);
             }
             default:
                 break;
