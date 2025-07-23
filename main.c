@@ -140,6 +140,7 @@ Node* updateStudent(Node* head) {
     printf("\nnhap id muon cap nhat");
     scanf("%d", &idToUpdate);
     fflush(stdin);
+    idToUpdate++;
 
     if (head->data.id == idToUpdate) {
         updateValue(head);
@@ -147,14 +148,24 @@ Node* updateStudent(Node* head) {
     }
 
     Node* curr = head;
-    while (curr != NULL) { // ptr point to a temp ptr to update muahhahaha
+    while (curr != NULL) {
         if (idToUpdate == curr->next->data.id) {
             updateValue(curr);
+            printf("cap nhat thanh cong");
+            return head;
         }
         curr = curr->next;
     }
-    printf("id ko ton tai");
+    printf("id ko ton tai\n");
     return head;
+}
+
+void freeList(Node* head) {
+    while (head) {
+        Node* tmp = head;
+        head = head->next;
+        free(tmp);
+    }
 }
 
 int main(void) {
@@ -182,9 +193,6 @@ int main(void) {
             }
             case 4: {
                 stuHead = updateStudent(stuHead);
-                if (stuHead != NULL) {
-                    printf("da cap nhat");
-                }
                 break;
             }
             default:
@@ -193,6 +201,6 @@ int main(void) {
 
     } while (choice != 0);
 
-    free(stuHead);
+    freeList(stuHead);
     return 0;
 }
